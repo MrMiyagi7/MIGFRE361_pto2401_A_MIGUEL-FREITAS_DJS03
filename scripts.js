@@ -3,6 +3,8 @@ import { books, authors, genres, BOOKS_PER_PAGE } from "./data.js";
 let page = 1;
 let matches = books;
 
+// Object to store DOM element
+// Object name = DOM name : DOM element
 const elements = {
   dataListItems: document.querySelector("[data-list-items]"),
   dataSearchGenres: document.querySelector("[data-search-genres]"),
@@ -25,29 +27,31 @@ const elements = {
   dataListDescription: document.querySelector("[data-list-description]"),
 };
 
-const starting = document.createDocumentFragment();
+// Funtion that displays previews
+function displayPreviews() {
+  const starting = document.createDocumentFragment();
+  for (const { author, id, image, title } of matches.slice(0, BOOKS_PER_PAGE)) {
+    const element = document.createElement("button");
+    element.classList = "preview";
+    element.setAttribute("data-preview", id);
 
-for (const { author, id, image, title } of matches.slice(0, BOOKS_PER_PAGE)) {
-  const element = document.createElement("button");
-  element.classList = "preview";
-  element.setAttribute("data-preview", id);
+    element.innerHTML = `
+                <img
+                    class="preview__image"
+                    src="${image}"
+                />
+      
+                <div class="preview__info">
+                    <h3 class="preview__title">${title}</h3>
+                    <div class="preview__author">${authors[author]}</div>
+                </div>
+            `;
 
-  element.innerHTML = `
-          <img
-              class="preview__image"
-              src="${image}"
-          />
+    starting.appendChild(element);
+  }
 
-          <div class="preview__info">
-              <h3 class="preview__title">${title}</h3>
-              <div class="preview__author">${authors[author]}</div>
-          </div>
-      `;
-
-  starting.appendChild(element);
+  elements.dataListItems.appendChild(starting);
 }
-
-elements.dataListItems.appendChild(starting);
 
 // Creating option list of genres
 const genreHtml = document.createDocumentFragment();
@@ -308,4 +312,8 @@ elements.dataListItems.addEventListener("click", (event) => {
     } (${new Date(active.published).getFullYear()})`;
     elements.dataListDescription.innerText = active.description;
   }
+});
+// Displays preview content on page load
+document.addEventListener("DOMContentLoaded", () => {
+  displayPreviews();
 });
