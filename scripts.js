@@ -53,39 +53,33 @@ function displayPreviews() {
   elements.dataListItems.appendChild(starting);
 }
 
-// Creating option list of genres
-const genreHtml = document.createDocumentFragment();
-const firstGenreElement = document.createElement("option");
-firstGenreElement.value = "any";
-firstGenreElement.innerText = "All Genres";
-genreHtml.appendChild(firstGenreElement);
+// Funtion that sorts and displays search options
+function createOptions(data, firstOptionText, firstOptionValue) {
+  const fragment = document.createDocumentFragment();
 
-for (const [id, name] of Object.entries(genres)) {
-  const element = document.createElement("option");
-  element.value = id;
-  element.innerText = name;
-  genreHtml.appendChild(element);
+  const firstElement = document.createElement("option");
+  firstElement.value = firstOptionValue;
+  firstElement.innerText = firstOptionText;
+  fragment.appendChild(firstElement);
+
+  for (const [id, name] of Object.entries(data)) {
+    const element = document.createElement("option");
+    element.value = id;
+    element.innerText = name;
+    fragment.appendChild(element);
+  }
+
+  return fragment;
 }
 
+// Usage for Genres
+const genreHtml = createOptions(genres, "All Generes", "any");
 elements.dataSearchGenres.appendChild(genreHtml);
 
-// Creating option list of authors
-const authorsHtml = document.createDocumentFragment();
-const firstAuthorElement = document.createElement("option");
-firstAuthorElement.value = "any";
-firstAuthorElement.innerText = "All Authors";
-authorsHtml.appendChild(firstAuthorElement);
-
-for (const [id, name] of Object.entries(authors)) {
-  const element = document.createElement("option");
-  element.value = id;
-  element.innerText = name;
-  authorsHtml.appendChild(element);
-}
-
+// Usage for Authors
+const authorsHtml = createOptions(authors, "All Authors", "any");
 elements.dataSearchAuthors.appendChild(authorsHtml);
 
-// Logic for light and dark mode user browser settings
 if (
   window.matchMedia &&
   window.matchMedia("(prefers-color-scheme: dark)").matches
