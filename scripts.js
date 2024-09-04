@@ -3,6 +3,28 @@ import { books, authors, genres, BOOKS_PER_PAGE } from "./data.js";
 let page = 1;
 let matches = books;
 
+const elements = {
+  dataListItems: document.querySelector("[data-list-items]"),
+  dataSearchGenres: document.querySelector("[data-search-genres]"),
+  dataSearchAuthors: document.querySelector("[data-search-authors]"),
+  dataSettingTheme: document.querySelector("[data-settings-theme]"),
+  dataListBtn: document.querySelector("[data-list-button]"),
+  dataSearchCancel: document.querySelector("[data-search-cancel]"),
+  dataSearchOverlay: document.querySelector("[data-search-overlay]"),
+  dataSettingCancel: document.querySelector("[data-settings-cancel]"),
+  dataSettingOverlay: document.querySelector("[data-settings-overlay]"),
+  dataHeaderSearch: document.querySelector("[data-header-search]"),
+  dataSearchTitle: document.querySelector("[data-search-title]"),
+  dataHeaderSettings: document.querySelector("[data-header-settings]"),
+  dataListClose: document.querySelector("[data-list-close]"),
+  activeData: document.querySelector("[data-list-active]"),
+  dataListBlur: document.querySelector("[data-list-blur]"),
+  dataListImg: document.querySelector("[data-list-image]"),
+  dataListTitle: document.querySelector("[data-list-title]"),
+  dataListSubtitle: document.querySelector("[data-list-subtitle]"),
+  dataListDescription: document.querySelector("[data-list-description]"),
+};
+
 const starting = document.createDocumentFragment();
 
 for (const { author, id, image, title } of matches.slice(0, BOOKS_PER_PAGE)) {
