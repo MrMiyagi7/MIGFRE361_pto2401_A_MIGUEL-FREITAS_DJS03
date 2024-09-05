@@ -27,10 +27,11 @@ const elements = {
   dataListDescription: document.querySelector("[data-list-description]"),
 };
 
-// Funtion that displays previews
+// Funtion that displays previews and adds event listners for active books
 function displayPreviews() {
   const starting = document.createDocumentFragment();
-  for (const { author, id, image, title } of matches.slice(0, BOOKS_PER_PAGE)) {
+  for (const book of matches.slice(0, BOOKS_PER_PAGE)) {
+    const { author, id, image, title } = book;
     const element = document.createElement("button");
     element.classList = "preview";
     element.setAttribute("data-preview", id);
@@ -46,6 +47,9 @@ function displayPreviews() {
                     <div class="preview__author">${authors[author]}</div>
                 </div>
             `;
+    element.addEventListener("click", () => {
+      openActiveBook(book);
+    });
 
     starting.appendChild(element);
   }
@@ -68,11 +72,10 @@ function createOptions(data, firstOptionText, firstOptionValue) {
     element.innerText = name;
     fragment.appendChild(element);
   }
-
   return fragment;
 }
 
-// Usage for Genres
+// Usage for genres
 const genreHtml = createOptions(genres, "All Generes", "any");
 elements.dataSearchGenres.appendChild(genreHtml);
 
@@ -277,36 +280,19 @@ elements.dataListBtn.addEventListener("click", () => {
   page += 1;
 });
 
-elements.dataListItems.addEventListener("click", (event) => {
-  const pathArray = Array.from(event.path || event.composedPath());
-  let active = null;
+// Function to render active book details on open book module
 
-  for (const node of pathArray) {
-    if (active) break;
+function openActiveBook(active) {
+  elements.activeData.open = true;
+  elements.dataListBlur.src = active.image;
+  elements.dataListImg.src = active.image;
+  elements.dataListTitle.innerText = active.title;
+  elements.dataListSubtitle.innerText = `${authors[active.author]} (${new Date(
+    active.published
+  ).getFullYear()})`;
+  elements.dataListDescription.innerText = active.description;
+}
 
-    if (node?.dataset?.preview) {
-      let result = null;
-
-      for (const singleBook of books) {
-        if (result) break;
-        if (singleBook.id === node?.dataset?.preview) result = singleBook;
-      }
-
-      active = result;
-    }
-  }
-  // Logic to render active book details on open book module
-  if (active) {
-    elements.activeData.open = true;
-    elements.dataListBlur.src = active.image;
-    elements.dataListImg.src = active.image;
-    elements.dataListTitle.innerText = active.title;
-    elements.dataListSubtitle.innerText = `${
-      authors[active.author]
-    } (${new Date(active.published).getFullYear()})`;
-    elements.dataListDescription.innerText = active.description;
-  }
-});
 // Displays preview content on page load
 document.addEventListener("DOMContentLoaded", () => {
   displayPreviews();
