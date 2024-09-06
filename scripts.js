@@ -180,14 +180,25 @@ function filterPreviews() {
 
     return matchesGenre && matchesAuthor && matcheSearch;
   });
-
+  matches = filteredBooks;
+  page = 1;
   displayPreviews(filteredBooks);
+
+  toggleNoResutlsMessage(filteredBooks.length < 1);
+
+  const remainingBooks = filteredBooks.length - page * BOOKS_PER_PAGE;
+  updateShowMoreButton(remainingBooks);
 }
 
-// elements.dataSearchGenres.addEventListener("change", filterPreviews);
-// elements.dataSearchAuthors.addEventListener("change", filterPreviews);
-// elements.dataSearchTitle.addEventListener("input", filterPreviews);
-
+function updateShowMoreButton(remainingBooks) {
+  elements.dataListBtn.innerHTML = `
+    <span>Show more</span>
+    <span class="list__remaining"> (${
+      remainingBooks > 0 ? remainingBooks : 0
+    })</span>
+  `;
+  elements.dataListBtn.disabled = remainingBooks <= 0;
+}
 elements.dataSearchForm.addEventListener("submit", (event) => {
   event.preventDefault();
   filterPreviews();
@@ -195,84 +206,14 @@ elements.dataSearchForm.addEventListener("submit", (event) => {
   elements.dataSearchOverlay.open = false;
 });
 
-//     // Logic to filter book by genre
-//     for (const book of books) {
-//       let genreMatch = filters.genre === "any";
+function toggleNoResutlsMessage(show) {
+  if (show) {
+    elements.noResultMsg.classList.add("list__message_show");
+  } else {
+    elements.noResultMsg.classList.remove("list__message_show");
+  }
+}
 
-//       for (const singleGenre of book.genres) {
-//         if (genreMatch) break;
-//         if (singleGenre === filters.genre) {
-//           genreMatch = true;
-//         }
-//       }
-
-//       if (
-//         (filters.title.trim() === "" ||
-//           book.title.toLowerCase().includes(filters.title.toLowerCase())) &&
-//         (filters.author === "any" || book.author === filters.author) &&
-//         genreMatch
-//       ) {
-//         result.push(book);
-//       }
-//     }
-
-//     page = 1;
-//     matches = result;
-
-//     // Logic to see if there are results and display an appropriate message if none
-//     if (result.length < 1) {
-//       document
-//         .querySelector("[data-list-message]")
-//         .classList.add("list__message_show");
-//     } else {
-//       document
-//         .querySelector("[data-list-message]")
-//         .classList.remove("list__message_show");
-//     }
-
-//     elements.dataListItems.innerHTML = "";
-//     const newItems = document.createDocumentFragment();
-
-//     for (const { author, id, image, title } of result.slice(
-//       0,
-//       BOOKS_PER_PAGE
-//     )) {
-//       const element = document.createElement("button");
-//       element.classList = "preview";
-//       element.setAttribute("data-preview", id);
-
-//       element.innerHTML = `
-//             <img
-//                 class="preview__image"
-//                 src="${image}"
-//             />
-
-//             <div class="preview__info">
-//                 <h3 class="preview__title">${title}</h3>
-//                 <div class="preview__author">${authors[author]}</div>
-//             </div>
-//         `;
-
-//       newItems.appendChild(element);
-//     }
-
-//     elements.dataListItems.appendChild(newItems);
-//     elements.dataListBtn.disabled = matches.length - page * BOOKS_PER_PAGE < 1;
-
-//     elements.dataListBtn.innerHTML = `
-//         <span>Show more</span>
-//         <span class="list__remaining"> (${
-//           matches.length - page * BOOKS_PER_PAGE > 0
-//             ? matches.length - page * BOOKS_PER_PAGE
-//             : 0
-//         })</span>
-//     `;
-
-//     window.scrollTo({ top: 0, behavior: "smooth" });
-//     elements.dataSearchOverlay.open = false;
-//   });
-
-// logic that shows more results upon show more button click
 elements.dataListBtn.addEventListener("click", () => {
   const fragment = document.createDocumentFragment();
 
@@ -300,7 +241,13 @@ elements.dataListBtn.addEventListener("click", () => {
   }
 
   elements.dataListItems.appendChild(fragment);
+
+  // Increment the page count
   page += 1;
+
+  // Update the "Show more" button using the new function
+  const remainingBooks = matches.length - page * BOOKS_PER_PAGE;
+  updateShowMoreButton(remainingBooks);
 });
 
 // Function to render active book details on open book module
