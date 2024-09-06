@@ -1,39 +1,88 @@
 # DJS03 Project Brief: Book Connect - Abstractions
 
-Dive into the delightful world of "Book Connect," where literary adventures await at your fingertips! Browse, explore, and uncover your next great read from a vast, vibrant collection. Whether you're a fan of thrilling mysteries, epic fantasies, or heartwarming romances, "Book Connect" brings the magic of books directly to you. Happy reading! 
+## Overview
 
-The "Book Connect" project provides an opportunity for students to refine a fully functional version of an application. The focus of this project is to enhance the code's maintainability, extendibility, and readability by applying concepts of objects and functions for abstraction. This will not only streamline future modifications but also consolidate students' understanding of higher-level programming concepts, including documentation, Styleguides, and abstraction principles.
+The Book Preview Application is a JavaScript-based web app that displays a list of books with options for filtering by genre and author. Users can view book previews, manage themes, and search for books using various filters. The application provides a responsive and user-friendly interface.
 
-![alt text](image.png)
+## Features
 
-#### Goals
+Book Previews: Displays a list of books with preview images, titles, and authors.
+Search and Filter: Allows users to filter books by genre, author, and search term.
+Theme Management: Supports light and dark themes based on user preferences.
+Pagination: Implements a "Show more" button to load additional book previews.
+Responsive Design: Ensures that the app is usable on different devices.
 
-- **Refactor Existing Code**: Analyse and refactor the given JavaScript and HTML code to improve its structure using objects and functions.
-- **Implement Abstraction**: Use abstraction to hide the complex reality while exposing only the necessary parts. This involves creating more generic functions that can perform tasks in a more flexible way.
-- **Documentation**: Write clear comments and documentation for the new code structure to explain the purpose and functionality of code blocks, functions, and objects.
-- **Follow Styleguides**: Adhere to established coding conventions and Styleguides to ensure code readability and maintainability.
+## Setup
 
-#### Tasks
+1. Clone the Repository:
+   git clone https://github.com/your-username/book-preview-app.git
 
-1. **Code Analysis**: Start by understanding the current implementation of the "Book Connect" application, including its HTML structure and JavaScript functionality.
-2. **Plan Refactoring**: Identify sections of the code that can be made more abstract and modular. Look for patterns and repetitive code that can be simplified.
-3. **Implement Abstraction**:
-   - **Objects**: Define objects to represent key elements of the application, such as books, authors, and genres. Utilise the provided data (e.g., `authors`, `genres`, `books`) to populate these objects.
-   - **Functions**: Create functions that handle repetitive tasks, such as rendering the book list, handling user interactions, and applying filters.
-4. **Enhance Functionality**: Ensure that the application remains fully functional after refactoring. Test all features to confirm that users can still search, filter, and view books as intended.
-5. **Documentation and Comments**: Throughout the refactoring process, document your code. Provide comments that explain the purpose and functionality of objects and functions.
-6. **Adherence to Styleguides**: Ensure your code follows JavaScript and HTML coding standards and best practices for readability and maintainability.
+2. Navigate to the Project Directory:
+   cd book-preview-app
 
-#### Discussion and Reflection
+3. Install Dependencies: If applicable, install any dependencies required for your project. (Note: This project does not have specific dependencies listed.)
 
-After completing the tasks, prepare a brief presentation for your coaching group on the following:
-- The rationale behind the refactoring decisions made, including the choice of objects and functions.
-- How abstraction has made the code more maintainable and extendable.
-- Any challenges faced during the refactoring process and how they were overcome.
-- Reflections on how this exercise has deepened your understanding of JavaScript programming concepts.
+4. Open the Application: Open index.html in a web browser to view the application.
 
-#### Submission Guidelines
+## File Structure
 
-Submit the refactored version of the "Book Connect" application, including all HTML, CSS, and JavaScript files. Ensure that your code is well-documented and adheres to the specified Styleguides. Include a written report covering the discussion and reflection points outlined above.
+- index.html: The main HTML file that includes the structure of the application.
+- styles.css: Contains the CSS styles for the application.
+- script.js: The main JavaScript file that includes the application logic.
 
-Make sure to submit your project to the LMS on the DJS03 Project Tab.
+## JavaScript Code Breakdown
+
+### Variables and DOM Elements
+
+- page: Keeps track of the current page for pagination.
+- matches: Stores the current list of books based on the applied filters.
+- elements: An object that holds references to various DOM elements used throughout the application.
+
+## Functions
+
+- displayPreviews(filteredBooks):
+
+  - Displays book previews based on the filtered list.
+  - Updates the DOM with the book previews and adds event listeners for each preview.
+
+- createOptions(data, firstOptionText, firstOptionValue):
+
+  - Creates HTML <option> elements for genres and authors dropdowns.
+  - Appends these options to the respective select elements.
+
+- setTheme(theme):
+
+  - Applies the selected theme (light or dark) to the application.
+  - Updates the theme in the settings form.
+
+- filterPreviews():
+
+  - Filters the list of books based on the selected genre, author, and search term.
+  - Updates the displayed previews and handles cases where no results are found.
+
+- updateShowMoreButton(remainingBooks):
+
+  - Updates the "Show more" button text and disables it when there are no more books to display.
+
+- toggleNoResultsMessage(show):
+  -Shows or hides the "No results found" message based on the result length.
+
+- openActiveBook(active):
+  - Displays detailed information about the selected book in a modal view.
+
+## Event Listeners
+
+- Search Form Submission:
+
+  - Triggers the filterPreviews function and updates the book list based on the search criteria.
+
+- "Show more" Button Click:
+
+  - Loads additional book previews and updates the button state.
+
+- Theme Settings Form Submission:
+
+  - Updates the application theme based on user selection.
+
+- Various UI Controls:
+  - Opens and closes modals for search, settings, and book details.
