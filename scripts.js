@@ -14,6 +14,7 @@ const elements = {
   dataListBtn: document.querySelector("[data-list-button]"),
   dataSearchCancel: document.querySelector("[data-search-cancel]"),
   dataSearchOverlay: document.querySelector("[data-search-overlay]"),
+  dataSettingsForm: document.querySelector("[data-settings-form]"),
   dataSettingCancel: document.querySelector("[data-settings-cancel]"),
   dataSettingOverlay: document.querySelector("[data-settings-overlay]"),
   dataHeaderSearch: document.querySelector("[data-header-search]"),
@@ -26,6 +27,7 @@ const elements = {
   dataListTitle: document.querySelector("[data-list-title]"),
   dataListSubtitle: document.querySelector("[data-list-subtitle]"),
   dataListDescription: document.querySelector("[data-list-description]"),
+  noResultMsg: document.querySelector("[data-list-message]"),
 };
 
 // Funtion that displays previews and adds event listners for active books
@@ -86,18 +88,38 @@ elements.dataSearchGenres.appendChild(genreHtml);
 const authorsHtml = createOptions(authors, "All Authors", "any");
 elements.dataSearchAuthors.appendChild(authorsHtml);
 
-if (
-  window.matchMedia &&
-  window.matchMedia("(prefers-color-scheme: dark)").matches
-) {
-  elements.dataSettingTheme.value = "night";
-  document.documentElement.style.setProperty("--color-dark", "255, 255, 255");
-  document.documentElement.style.setProperty("--color-light", "10, 10, 20");
-} else {
-  elements.dataSettingTheme.value = "day";
-  document.documentElement.style.setProperty("--color-dark", "10, 10, 20");
-  document.documentElement.style.setProperty("--color-light", "255, 255, 255");
+function setTheme(theme) {
+  if (theme === "night") {
+    document.documentElement.style.setProperty("--color-dark", "255, 255, 255");
+    document.documentElement.style.setProperty("--color-light", "10, 10, 20");
+  } else {
+    document.documentElement.style.setProperty("--color-dark", "10, 10, 20");
+    document.documentElement.style.setProperty(
+      "--color-light",
+      "255, 255, 255"
+    );
+  }
+
+  // Update the theme selection in the settings form
+  elements.dataSettingTheme.value = theme;
 }
+
+const preferredTheme =
+  window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "night"
+    : "day";
+
+setTheme(preferredTheme);
+
+elements.dataSettingsForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const formData = new FormData(event.target);
+  const { theme } = Object.fromEntries(formData);
+
+  setTheme(theme);
+
+  elements.dataSettingOverlay.open = false;
+});
 
 // Displays show more button
 elements.dataListBtn.innerText = `Show more (${books.length - BOOKS_PER_PAGE})`;
@@ -141,31 +163,6 @@ elements.dataHeaderSettings.addEventListener("click", () => {
 elements.dataListClose.addEventListener("click", () => {
   elements.activeData.open = false;
 });
-
-// logic for light and dark selection (manual)
-document
-  .querySelector("[data-settings-form]")
-  .addEventListener("submit", (event) => {
-    event.preventDefault();
-    const formData = new FormData(event.target);
-    const { theme } = Object.fromEntries(formData);
-
-    if (theme === "night") {
-      document.documentElement.style.setProperty(
-        "--color-dark",
-        "255, 255, 255"
-      );
-      document.documentElement.style.setProperty("--color-light", "10, 10, 20");
-    } else {
-      document.documentElement.style.setProperty("--color-dark", "10, 10, 20");
-      document.documentElement.style.setProperty(
-        "--color-light",
-        "255, 255, 255"
-      );
-    }
-
-    elements.dataSettingOverlay.open = false;
-  });
 
 function filterPreviews() {
   const selectedGenre = elements.dataSearchGenres.value;
@@ -318,8 +315,3 @@ function openActiveBook(active) {
   ).getFullYear()})`;
   elements.dataListDescription.innerText = active.description;
 }
-
-// Displays preview content on page load
-// document.addEventListener("DOMContentLoaded", () => {
-//   displayPreviews(matches);
-// });
