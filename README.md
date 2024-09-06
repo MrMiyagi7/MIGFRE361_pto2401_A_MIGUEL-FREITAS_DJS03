@@ -1,5 +1,7 @@
 # DJS03 Project Brief: Book Connect - Abstractions
 
+Link to written refelcetion - https://docs.google.com/document/d/1X2aOT7bbRxh5Y5kh3qOnFE3v4XU_yaQ-JWLf-uh30H0/edit?usp=sharing
+
 ## Overview
 
 The Book Preview Application is a JavaScript-based web app that displays a list of books with options for filtering by genre and author. Users can view book previews, manage themes, and search for books using various filters. The application provides a responsive and user-friendly interface.
