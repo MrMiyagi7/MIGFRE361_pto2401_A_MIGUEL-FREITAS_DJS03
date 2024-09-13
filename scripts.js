@@ -1,4 +1,5 @@
 import { books, authors, genres, BOOKS_PER_PAGE } from "./data.js";
+import { BookPreview } from "./bookpreview.js";
 
 let page = 1;
 let matches = books;
@@ -33,23 +34,25 @@ const elements = {
 // Funtion that displays previews and adds event listners for active books
 function displayPreviews(filteredBooks) {
   const starting = document.createDocumentFragment();
+
   for (const book of filteredBooks.slice(0, BOOKS_PER_PAGE)) {
     const { author, id, image, title } = book;
-    const element = document.createElement("button");
-    element.classList = "preview";
-    element.setAttribute("data-preview", id);
 
+    // Create the custom element
+    const element = document.createElement("book-preview");
+
+    // Set the attributes and slots
+    element.setAttribute("data-preview-id", id); // for the preview
+    element.setAttribute("image-src", image); // pass the image URL
+    console.log(element.getAttribute("image-src"));
+
+    // Use slots to pass the title and author
     element.innerHTML = `
-                <img
-                    class="preview__image"
-                    src="${image}"
-                />
-      
-                <div class="preview__info">
-                    <h3 class="preview__title">${title}</h3>
-                    <div class="preview__author">${authors[author]}</div>
-                </div>
-            `;
+      <span slot="title">${title}</span>
+      <span slot="author">${authors[author]}</span>
+    `;
+
+    // Add an event listener to open the active book
     element.addEventListener("click", () => {
       openActiveBook(book);
     });
