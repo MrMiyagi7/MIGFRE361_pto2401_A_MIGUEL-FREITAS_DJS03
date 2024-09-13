@@ -6,6 +6,7 @@ export class BookPreview extends HTMLElement {
         <style>
         .preview {
         border-width: 0;
+        max-height: 5rem;
         font-family: Roboto, sans-serif;
         padding: 0.5rem 1rem;
         display: flex;
