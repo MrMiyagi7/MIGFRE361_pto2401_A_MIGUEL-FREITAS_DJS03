@@ -1,90 +1,114 @@
 # DJS03 Project Brief: Book Connect - Abstractions
 
-Link to written refelcetion - https://docs.google.com/document/d/1X2aOT7bbRxh5Y5kh3qOnFE3v4XU_yaQ-JWLf-uh30H0/edit?usp=sharing
+# Web Components Documentation
 
 ## Overview
 
-The Book Preview Application is a JavaScript-based web app that displays a list of books with options for filtering by genre and author. Users can view book previews, manage themes, and search for books using various filters. The application provides a responsive and user-friendly interface.
+This README provides a comprehensive guide to the web components used in our application. It covers the process of creating the components, challenges faced, and instructions on how to use these components within the app. Additionally, it suggests three other components that could be converted into web components for better modularity.
 
-## Features
+## Web Components Created
 
-Book Previews: Displays a list of books with preview images, titles, and authors.
-Search and Filter: Allows users to filter books by genre, author, and search term.
-Theme Management: Supports light and dark themes based on user preferences.
-Pagination: Implements a "Show more" button to load additional book previews.
-Responsive Design: Ensures that the app is usable on different devices.
+### 1. BookPreview Component
 
-## Setup
+Purpose:
+The book-preview component is used to display a preview of a book, including its title, author, and image.
 
-1. Clone the Repository:
-   git clone https://github.com/your-username/book-preview-app.git
+### Implementation Details:
 
-2. Navigate to the Project Directory:
-   cd book-preview-app
+- The component is defined as a custom HTML element <book-preview>.
+- It uses attributes and slots to pass and display the book's data.
+- The data-preview-id attribute holds the book's ID.
+- The image-src attribute holds the URL of the book's image.
+- Slots are used to display the title and author inside the component.
 
-3. Install Dependencies: If applicable, install any dependencies required for your project. (Note: This project does not have specific dependencies listed.)
+### Usage:
 
-4. Open the Application: Open index.html in a web browser to view the application.
+<book-preview
+data-preview-id="book-id"
+image-src="image-url"
 
-## File Structure
+> <span slot="title">Book Title</span> > <span slot="author">Author Name</span> > </book-preview>
 
-- index.html: The main HTML file that includes the structure of the application.
-- styles.css: Contains the CSS styles for the application.
-- script.js: The main JavaScript file that includes the application logic.
+### Challenges:
 
-## JavaScript Code Breakdown
+- Loading Variables: Ensuring that the attributes and slots are properly set and accessed within the component.
+- Callback Function Timing: Implementing event listeners and callbacks to ensure that the component functions correctly after rendering. This was resolved by ensuring that the event listeners are added after the component is fully rendered.
 
-### Variables and DOM Elements
+### 2. Filter and Search Components
 
-- page: Keeps track of the current page for pagination.
-- matches: Stores the current list of books based on the applied filters.
-- elements: An object that holds references to various DOM elements used throughout the application.
+### Purpose:
 
-## Functions
+These components handle filtering and searching functionality for the book list.
 
-- displayPreviews(filteredBooks):
+### Implementation Details:
 
-  - Displays book previews based on the filtered list.
-  - Updates the DOM with the book previews and adds event listeners for each preview.
+- The filter options (genres and authors) are dynamically created using the createOptions function.
+- The search functionality is tied to the submit event of the search form, triggering the filterPreviews function.
 
-- createOptions(data, firstOptionText, firstOptionValue):
+### Usage:
 
-  - Creates HTML <option> elements for genres and authors dropdowns.
-  - Appends these options to the respective select elements.
+<form data-search-form>
+  <select data-search-genres></select>
+  <select data-search-authors></select>
+  <input type="text" data-search-title />
+  <button type="submit">Search</button>
+</form>
 
-- setTheme(theme):
+### 3. Theme Settings Component
 
-  - Applies the selected theme (light or dark) to the application.
-  - Updates the theme in the settings form.
+### Purpose:
 
-- filterPreviews():
+This component allows users to switch between light and dark themes.
 
-  - Filters the list of books based on the selected genre, author, and search term.
-  - Updates the displayed previews and handles cases where no results are found.
+### Implementation Details:
 
-- updateShowMoreButton(remainingBooks):
+- The setTheme function applies the selected theme by updating CSS custom properties.
+- The theme is saved and applied based on user preferences and system settings.
 
-  - Updates the "Show more" button text and disables it when there are no more books to display.
+### Usage:
 
-- toggleNoResultsMessage(show):
-  -Shows or hides the "No results found" message based on the result length.
+<form data-settings-form>
+  <select data-settings-theme>
+    <option value="day">Day</option>
+    <option value="night">Night</option>
+  </select>
+  <button type="submit">Apply Theme</button>
+</form>
 
-- openActiveBook(active):
-  - Displays detailed information about the selected book in a modal view.
+#### Challenges and Solutions
 
-## Event Listeners
+1. Loading Variables:
 
-- Search Form Submission:
+-Challenge: Variables and attributes needed to be dynamically loaded and updated.
 
-  - Triggers the filterPreviews function and updates the book list based on the search criteria.
+- Solution: Used appropriate methods to ensure variables are correctly set and accessed. Ensured that attributes were properly assigned and updated in the custom element.
 
-- "Show more" Button Click:
+2. Callback Function Timing:
 
-  - Loads additional book previews and updates the button state.
+- Challenge: Ensuring that event listeners and callbacks functioned correctly after rendering.
+- Solution: Added event listeners after the component was fully rendered, and used lifecycle hooks or state management to handle timing issues.
 
-- Theme Settings Form Submission:
+3. Dynamic Content Handling:
 
-  - Updates the application theme based on user selection.
+- Challenge: Handling dynamic content and updates within the custom components.
+- Solution: Used document fragments and efficient DOM manipulation techniques to manage and update the content smoothly.
 
-- Various UI Controls:
-  - Opens and closes modals for search, settings, and book details.
+### Future Components
+
+Here are three additional components that could be converted into web components:
+
+#### Pagination Controls:
+
+Purpose: Manage pagination for the book list, allowing users to navigate between pages.
+
+#### Notification Banner:
+
+Purpose: Display notifications or messages to users, such as success or error messages.
+
+#### User Profile Widget:
+
+Purpose: Display user profile information and settings in a modular way.
+
+## Conclusion
+
+By creating modular web components, we have improved the structure and maintainability of our application. Each component is designed to handle specific functionality, making the codebase more organized and easier to manage. The challenges faced were addressed through careful implementation and testing, ensuring that the components work seamlessly within the app.
