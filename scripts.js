@@ -127,7 +127,7 @@ elements.dataSettingsForm.addEventListener("submit", (event) => {
 elements.dataListBtn.innerText = `Show more (${books.length - BOOKS_PER_PAGE})`;
 
 // Disables show more button
-elements.dataListBtn.disabled = matches.length - page * BOOKS_PER_PAGE > 0;
+elements.dataListBtn.disabled = matches.length - page * BOOKS_PER_PAGE < 0;
 
 // change the content of the show more button
 elements.dataListBtn.innerHTML = `
