@@ -44,7 +44,6 @@ function displayPreviews(filteredBooks) {
     // Set the attributes and slots
     element.setAttribute("data-preview-id", id); // for the preview
     element.setAttribute("image-src", image); // pass the image URL
-    console.log(element.getAttribute("image-src"));
 
     // Use slots to pass the title and author
     element.innerHTML = `
@@ -224,23 +223,22 @@ elements.dataListBtn.addEventListener("click", () => {
     page * BOOKS_PER_PAGE,
     (page + 1) * BOOKS_PER_PAGE
   )) {
-    const element = document.createElement("button");
-    element.classList = "preview";
-    element.setAttribute("data-preview", id);
+    const bookPreview = document.createElement("book-preview");
+    bookPreview.setAttribute("data-preview-id", id);
+    bookPreview.setAttribute("image-src", image);
 
-    element.innerHTML = `
-            <img
-                class="preview__image"
-                src="${image}"
-            />
-            
-            <div class="preview__info">
-                <h3 class="preview__title">${title}</h3>
-                <div class="preview__author">${authors[author]}</div>
-            </div>
-        `;
+    // Use slots to set the title and author
+    bookPreview.innerHTML = `
+      <span slot="title">${title}</span>
+      <span slot="author">${authors[author]}</span>
+    `;
 
-    fragment.appendChild(element);
+    // Add an event listener to handle click events
+    bookPreview.addEventListener("click", () => {
+      openActiveBook({ author, id, image, title });
+    });
+
+    fragment.appendChild(bookPreview);
   }
 
   elements.dataListItems.appendChild(fragment);
