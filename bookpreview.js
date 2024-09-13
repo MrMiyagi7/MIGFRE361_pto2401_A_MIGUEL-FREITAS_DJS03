@@ -25,3 +25,5 @@ export class BookPreview extends HTMLElement {
     shadow.appendChild(preview);
   }
 }
+// Register the custom element
+customElements.define("book-preview", BookPreview);
